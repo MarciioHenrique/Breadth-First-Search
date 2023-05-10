@@ -21,30 +21,33 @@ function main(){
         "Iasi": ["Vaslui", "Neamt"],
         "Neamt": ["Iasi"]
     }  
-    var origem = "Oradea"
-    var destino = "Rimnicu Vilcea"
-    var resultado = buscaEmExtensão(grafo, origem, destino)
+    const [origem, destino] = process.argv.splice(2)
+
+    if (origem == destino) {
+        console.log("Você já está na cidade de destino")
+        return 
+    }
+
+    const resultado = buscaEmExtensão(grafo, origem, destino)
 
     if (resultado == false) {
-        console.log("Caminho não encontrado!")
+        console.log("Caminho não encontrado")
     }
     else {
-        console.log(resultado)
+        console.log("Cidade atual: " + origem)
+        console.log("Cidade destino: " + destino)
+        console.log("Caminho: " + resultado)
     }
 }
 
 function buscaEmExtensão(grafo, origem, destino){
-    //Define a fila de busca
-    var fila = [origem]
-
-    //Define os nós visitados
-    var visitados = [origem]
-
-    //Define o caminho a percorrer
-    var parentes = {}
+    var fila = [origem] //Define a fila de busca
+    var visitados = [origem] //Define os nós visitados
+    var parentes = {} //Define o caminho a percorrer quando encontrar o destino
 
     //Enquanto a fila não estiver vazia
     while (fila.length > 0) {
+        //console.log(fila)
         //pega o primeiro elemento da fila
         var no = fila.shift(0)
 
@@ -59,7 +62,7 @@ function buscaEmExtensão(grafo, origem, destino){
             return caminho.reverse()
         }
 
-        //Para cada vizinho do nó
+        //Para cada vizinho do nó atual
         for (vizinho in grafo[no]){
             //verifica se o nó vizinho está nos nós visitados
             if (!visitados.includes(grafo[no][vizinho])) {
